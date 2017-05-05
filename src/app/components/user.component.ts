@@ -3,13 +3,14 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'user',
   template: `
-  	<h1>Hello {{name}}</h1>
-  	<p><a href="mailto:{{email}}">{{email}}</a></p>
-    <button (click)="toggleHobbies">Show Hobbies</button>
+    <button (click)="toggleHobbies()">{{showHobbies ? 'Hide' : 'Show'}}</button>
     <div *ngIf="showHobbies">
       <ul>
-        <li *ngFor="let hobby of hobbies">{{hobby}}</li>
+        <li *ngFor="let hobby of hobbies;let i=index;">{{hobby}} <button (click)="deleteHobby(i)">x</button></li>
       </ul>
+      <form (submit)="addHobby(hobby.value)">
+        <input type="text" #hobby>
+      </form>
     </div>
   `,
 })
@@ -27,6 +28,14 @@ export class UserComponent  {
   }
 
   toggleHobbies() {
-    this.showHobbies = true;
+    this.showHobbies = !this.showHobbies;
+  }
+
+  addHobby(hobby) {
+    this.hobbies.push(hobby);
+  }
+
+  deleteHobby(i) {
+    this.hobbies.splice(i, 1);
   }
 }
