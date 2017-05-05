@@ -1,30 +1,28 @@
 import { Component } from '@angular/core';
+import { PostsService } from '../services/posts.service';
 
 @Component({
+  moduleId: module.id,
   selector: 'user',
-  template: `
-    <button (click)="toggleHobbies()">{{showHobbies ? 'Hide' : 'Show'}}</button>
-    <div *ngIf="showHobbies">
-      <ul>
-        <li *ngFor="let hobby of hobbies;let i=index;">{{hobby}} <button (click)="deleteHobby(i)">x</button></li>
-      </ul>
-      <form (submit)="addHobby(hobby.value)">
-        <input type="text" #hobby>
-      </form>
-    </div>
-  `
+  templateUrl: 'user.component.html',
+  providers: [PostsService]
 })
 export class UserComponent  {
 	name: string;
   email: string;
   hobbies: string[];
   showHobbies: boolean;
+  posts: Post[];
 
-  constructor() {
+  constructor(private postsService: PostsService) {
     this.name = "Christie";
     this.email = "chrisque5@gmail.com";
     this.hobbies = ["Music", "Movie", "Gadgets", "Bikes", "Cars"];
     this.showHobbies = false;
+
+    this.postsService.getPosts().subscribe(posts => {
+      this.posts = posts;
+    })
   }
 
   toggleHobbies() {
@@ -38,4 +36,10 @@ export class UserComponent  {
   deleteHobby(i: number) {
     this.hobbies.splice(i, 1);
   }
+}
+
+interface Post {
+  id:  number;
+  title: string;
+  body: string;
 }
