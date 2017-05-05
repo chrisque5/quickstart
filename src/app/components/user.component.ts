@@ -12,7 +12,7 @@ import { Component } from '@angular/core';
         <input type="text" #hobby>
       </form>
     </div>
-  `,
+  `
 })
 export class UserComponent  {
 	name: string;
